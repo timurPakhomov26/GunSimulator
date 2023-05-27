@@ -12,15 +12,25 @@ public class Item : MonoBehaviour
    
    public Animator Animator;
    public GameObject UIweaponPanel;
+
+   public GameObject IBuilderGameObject;
+   public IBuilder Builder;
    
    public bool IsLoaded = false;
-   public BuilderBase Builder;
+   
    public Animator Magazine;
    public int CurrentBulletsCount;
+   public int CountOfAddedBullets;
 
    public Transform BulletSpawn;
 
    [Header("Sound")]
    public AudioSource _shotSound;
+
+
+   private void OnEnable() 
+   {
+     // Builder = IBuilderGameObject.GetComponent<IBuilder>();
+   }
    
 }

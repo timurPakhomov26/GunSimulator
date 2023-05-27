@@ -22,8 +22,19 @@ public class Weapon : MonoBehaviour
    {
       for(int i=0; i < _items.Length;i++)
       {
-         _items[i].Builder.OnTrigger += CheckOnMagazineAnimation;
-         _items[i].Builder.OnReloadMagazine += ReloadMagazine;
+         _items[i].Builder = _items[i].IBuilderGameObject.GetComponent<IBuilder>();
+        
+        // _items[i].IBuilderGameObject.GetComponent<IBuilder>().OnTrigger += CheckOnMagazineAnimation;
+       //  _items[i].IBuilderGameObject.GetComponent<IBuilder>().OnReloadMagazine += ReloadMagazine;
+      } 
+      for(int i=0; i < _items.Length;i++)
+      {
+        
+         /*_items[i].Builder.OnTrigger += CheckOnMagazineAnimation;
+         _items[i].Builder.OnReloadMagazine += ReloadMagazine;*/
+
+        // _items[i].IBuilderGameObject.GetComponent<IBuilder>().OnTrigger += CheckOnMagazineAnimation;
+       //  _items[i].IBuilderGameObject.GetComponent<IBuilder>().OnReloadMagazine += ReloadMagazine;
       }
    }
 
@@ -32,13 +43,22 @@ public class Weapon : MonoBehaviour
    {
       for(int i=0; i < _items.Length;i++)
       {
-         _items[i].Builder.OnTrigger -= CheckOnMagazineAnimation;
-         _items[i].Builder.OnReloadMagazine -= ReloadMagazine;
+        /* _items[i].Builder.OnTrigger -= CheckOnMagazineAnimation;
+         _items[i].IBuilderGameObject.GetComponent<IBuilder>().OnReloadMagazine -= ReloadMagazine;*/
+        /* _items[i].Builder.OnTrigger -= CheckOnMagazineAnimation;
+         _items[i].Builder.OnReloadMagazine -= ReloadMagazine;*/
       }  
    }
 
    private void Start() 
    {
+     for(int i=0; i < _items.Length;i++)
+      {
+        /* _items[0].Builder.OnTrigger += CheckOnMagazineAnimation;
+         _items[0].Builder.OnReloadMagazine += ReloadMagazine;*/
+         //_items[i].IBuilderGameObject.GetComponent<IBuilder>().OnReloadMagazine += ReloadMagazine;
+      }
+
       foreach(var item in _items)
       {
         item.gameObject.SetActive(false);
@@ -70,7 +90,20 @@ public class Weapon : MonoBehaviour
     {
        if(_items[UiController.WeaponIndex].IsLoaded == true)
        {
-         if(_items[UiController.WeaponIndex].CurrentBulletsCount > 0)
+         if(UiController.InfinityBulletsActive == true)
+         {
+             _items[UiController.WeaponIndex].Animator.SetTrigger("Shot");
+           StartCoroutine(ComeAnimationToDefault()); 
+           BulletFly();
+           _playerData.CoinsValue += _items[_index].WeaponInfoo.CoinsPerShot;
+           
+           OnShot?.Invoke();
+     
+           _uiController.ApplyUiElements();
+           return;
+         }
+
+         if (_items[UiController.WeaponIndex].CurrentBulletsCount > 0)
          {
            _items[UiController.WeaponIndex].Animator.SetTrigger("Shot");
            StartCoroutine(ComeAnimationToDefault()); 
@@ -115,6 +148,11 @@ public class Weapon : MonoBehaviour
        
 
       EquipItem(UiController.WeaponIndex);
+      
+      if(_items[UiController.WeaponIndex].Builder.MagazineInWeapon == true)
+      {
+         _items[UiController.WeaponIndex].Builder.OnMouse = false;
+      }
      // CheckOnMagazineAnimation();
 
      /* for(int i = 0; i < _items.Length; i++)
@@ -175,13 +213,18 @@ public class Weapon : MonoBehaviour
 
     
 
-   private void CheckOnMagazineAnimation()
+   public void CheckOnMagazineAnimation()
     {
        if(_items[UiController.WeaponIndex].Builder.MagazineInTrigger == true)
        {
           _items[UiController.WeaponIndex].Magazine.SetTrigger("Magazine");
-          _items[UiController.WeaponIndex].Builder.MagazineInWeapon = true;
-          _items[UiController.WeaponIndex].CurrentBulletsCount = _items[UiController.WeaponIndex].WeaponInfoo.BulletsCount;
+        //  _items[UiController.WeaponIndex].CurrentBulletsCount = _items[UiController.WeaponIndex].WeaponInfoo.BulletsCount;
+        _items[UiController.WeaponIndex].CurrentBulletsCount += _items[UiController.WeaponIndex].CountOfAddedBullets;
+         if(_items[UiController.WeaponIndex].CurrentBulletsCount >= _items[UiController.WeaponIndex].WeaponInfoo.BulletsCount)
+         {
+           _items[UiController.WeaponIndex].Builder.MagazineInWeapon = true;
+
+         }
           _uiController.ApplyUiElements();
          // StartCoroutine(ComeAnimationToDefault());
        }

@@ -16,7 +16,7 @@ MonoBehaviour:
   _name: Remington
   _weaponClass: Drobovik
   _image: {fileID: 0}
-  _bulletsCount: 5
+  _bulletsCount: 4
   _damage: 0
   _price: 15000
   _rateOfFire: 0

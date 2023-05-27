@@ -3,44 +3,62 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletBuilder : MonoBehaviour,BuilderBase
+[RequireComponent(typeof(Rigidbody2D),typeof(CapsuleCollider2D),typeof(Animator))]
+public class BulletBuilder : MonoBehaviour, IBuilder
 {
+   [SerializeField] private Weapon _weapon;
 
+   public bool MagazineInWeapon{get ; set ; }
+   
+    public bool MagazineInTrigger{get ; set ; }
+    public bool IsCollider{get ; set ; }
+    public bool Enabled { get; set ; }
+   
     
-    public bool MagazineInWeapon{get;set;}
-    public bool MagazineInTrigger{get; set; }
-    public bool Enabled{get; set; }
-    private bool _onMouse;
+
+    public bool OnMouse{get; set; }
     private Vector3 _startPosition;
     private Vector3 _cursorPosition;
-    public bool IsCollider{get; set; }
-    [SerializeField] private Weapon _weapon;
-
-
    
- 
-     public Action OnTrigger { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public Action OnReloadMagazine { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-   
+
+   private Action OnTrigger;
+    
+    
+
+   private void OnEnable() 
+   {
+    
+    OnTrigger += CheckMagazine;
+   }
+
+   private void OnDisable() 
+   {
+    
+    OnTrigger -= CheckMagazine;
+   }
 
     private void Start()
     {
-      _onMouse = false;
+      OnMouse = false;
       _startPosition = transform.position;
     }
 
     private void OnMouseDown()
     { 
-      _onMouse = true;
+      OnMouse = true;
     }
     private void OnMouseUp()
     {
-        _onMouse = false;
+       OnMouse = false;
+    }
+
+    private void Update() 
+    {
+       SetEnable();  
     }
 
     private void LateUpdate()
     {
-      SetEnabled();
       
         _cursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         _cursorPosition.z = 0;
@@ -51,7 +69,7 @@ public class BulletBuilder : MonoBehaviour,BuilderBase
           _isCollider = true;*/
 
         
-          if (_onMouse == true)
+          if (OnMouse == true)
            {
 
             if(IsCollider == false)
@@ -63,10 +81,11 @@ public class BulletBuilder : MonoBehaviour,BuilderBase
              {
               
              // _isInParent = true;
-              _onMouse = false;
+              OnMouse = false;
               //transform.position = Vector3.zero;
              // _isCollider = true;
                MagazineInTrigger = true;
+               OnTrigger?.Invoke();
               
 
               /* if(_onMouse == true)
@@ -118,13 +137,16 @@ public class BulletBuilder : MonoBehaviour,BuilderBase
        yield return new WaitForSeconds(0.8f);
     }
 
-    public void SetEnabled()
+    private void CheckMagazine()
     {
-        if(Enabled == true)     
+       _weapon.CheckOnMagazineAnimation();
+    }
+
+    public void SetEnable()
+    {
+        if(Enabled == true)
            this.enabled = true;
-        
         else
-          this.enabled = false;
-        
+         this.enabled = false;
     }
 }

@@ -8,6 +8,7 @@ public class SoundController : MonoBehaviour
     [SerializeField] private AudioSource _magazineSource;
     [SerializeField] private AudioSource _loadSource;
     [SerializeField] private AudioSource _shotWithoutSource;
+    
     public void ShotSoundPlay()
     {
         _shotSource.Play();

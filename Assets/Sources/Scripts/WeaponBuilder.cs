@@ -3,21 +3,36 @@ using UnityEngine;
 using System;
 
 [RequireComponent(typeof(Rigidbody2D),typeof(CapsuleCollider2D),typeof(Animator))]
-public class WeaponBuilder : MonoBehaviour, BuilderBase
+public class WeaponBuilder : MonoBehaviour, IBuilder
 {
-  
-    public bool MagazineInWeapon {get; set; }
-    public bool MagazineInTrigger {get; set; }
-    private bool _onMouse;
+   [SerializeField] private Weapon _weapon;
+
+    public bool MagazineInWeapon{get ; set ; }
+   
+    public bool MagazineInTrigger{get ; set ; }
+    public bool IsCollider{get ; set ; }
+    public bool Enabled { get; set ; }
+   
+    
+ 
+    public bool OnMouse{get; set; }
     private Vector3 _startPosition;
     private Vector3 _cursorPosition;
-    public bool IsCollider {get; set; }
-    [SerializeField] private Weapon _weapon;
 
-   
-   public  Action OnTrigger { get; set; }
-    public Action OnReloadMagazine { get ; set ; }
-    public bool Enabled { get; set; }
+    private Action OnTrigger;
+    
+    
+
+   private void OnEnable() 
+   {
+    OnTrigger += CheckMagazine;
+   }
+
+   private void OnDisable() 
+   {
+    
+    OnTrigger -= CheckMagazine;
+   }
 
     private void Awake()
     {
@@ -25,17 +40,23 @@ public class WeaponBuilder : MonoBehaviour, BuilderBase
     }
     private void Start()
     {
-      _onMouse = false;
+      OnMouse = false;
       _startPosition = transform.position;
     }
 
     private void OnMouseDown()
     { 
-      _onMouse = true;
+      OnMouse = true;
     }
     private void OnMouseUp()
     {
-        _onMouse = false;
+        OnMouse = false;
+    }
+
+    private void Update() 
+    {
+      Debug.Log(Enabled);
+       SetEnable();  
     }
 
     private void LateUpdate()
@@ -49,7 +70,7 @@ public class WeaponBuilder : MonoBehaviour, BuilderBase
           _isCollider = true;*/
 
         
-          if (_onMouse == true)
+          if (OnMouse == true)
            {
 
             if(IsCollider == false)
@@ -61,11 +82,12 @@ public class WeaponBuilder : MonoBehaviour, BuilderBase
              {
               
              // _isInParent = true;
-              _onMouse = false;
+              OnMouse = false;
               //transform.position = Vector3.zero;
              // _isCollider = true;
                MagazineInTrigger = true;
                OnTrigger?.Invoke();
+              // OnTrigger?.Invoke();
 
               /* if(_onMouse == true)
                {
@@ -99,6 +121,7 @@ public class WeaponBuilder : MonoBehaviour, BuilderBase
     {
         if (collision.gameObject.CompareTag("Spawn"))
         {
+          Debug.Log("Collider");
             IsCollider = true;
         }
     }
@@ -116,8 +139,18 @@ public class WeaponBuilder : MonoBehaviour, BuilderBase
        yield return new WaitForSeconds(0.8f);
     }
 
-    public void SetEnabled()
+    private void CheckMagazine()
     {
-        throw new NotImplementedException();
+       _weapon.CheckOnMagazineAnimation();
     }
+
+    public void SetEnable()
+    {
+        if(Enabled == true)
+           this.enabled = true;
+        else
+         this.enabled = false;
+    }
+
+    
 }
