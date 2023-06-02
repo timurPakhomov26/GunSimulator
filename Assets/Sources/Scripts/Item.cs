@@ -6,8 +6,8 @@ public class Item : MonoBehaviour
    public  bool  IsBuyed = false;
    public WeaponInfo WeaponInfoo;
    public GameObject WeaponGameobject;
-   public Transform muzzleFlash;
-   public TextMeshProUGUI PriceCount;
+   public GameObject MuzzleFlash;
+ 
    public TextMeshProUGUI LevelForOpen;
    
    public Animator Animator;
@@ -24,13 +24,11 @@ public class Item : MonoBehaviour
 
    public Transform BulletSpawn;
 
+   public GunTrigger GunTriggers;
+
    [Header("Sound")]
-   public AudioSource _shotSound;
+   public SoundController Sound;
 
-
-   private void OnEnable() 
-   {
-     // Builder = IBuilderGameObject.GetComponent<IBuilder>();
-   }
+   
    
 }

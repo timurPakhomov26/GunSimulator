@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bullet: {fileID: 5610246596199644231, guid: fe21f04aa08533946a5be847866bdef3, type: 3}
   _name: "\u041F\u0438\u0441\u0442\u043E\u043B\u0435\u0442 \u041C\u0430\u043A\u0430\u0440\u043E\u0432\u0430"
-  _weaponClass: Pistol
+  _weaponClass: "\u041F\u0438\u0441\u0442\u043E\u043B\u0435\u0442"
   _image: {fileID: 0}
   _bulletsCount: 8
   _damage: 0

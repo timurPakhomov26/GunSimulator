@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bullet: {fileID: 2297786258592943808, guid: fe21f04aa08533946a5be847866bdef3, type: 3}
   _name: AK-47
-  _weaponClass: Automat
+  _weaponClass: "\u0410\u0432\u0442\u043E\u043C\u0430\u0442"
   _image: {fileID: 0}
   _bulletsCount: 30
   _damage: 0
   _price: 10000
-  _rateOfFire: 0
+  _rateOfFire: 0.2
   _type: 1
   _experiencePerShot: 30
   _coinsPerShot: 30
+  _levelForOpen: 5

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Remington
   m_EditorClassIdentifier: 
   _bullet: {fileID: -2275987017145168933, guid: fe21f04aa08533946a5be847866bdef3, type: 3}
-  _name: Remington
-  _weaponClass: Drobovik
+  _name: "\u0420\u0435\u043C\u0438\u043D\u0433\u0442\u043E\u043D"
+  _weaponClass: "\u0414\u0440\u043E\u0431\u043E\u0432\u0438\u043A"
   _image: {fileID: 0}
   _bulletsCount: 4
   _damage: 0
@@ -23,3 +23,4 @@ MonoBehaviour:
   _type: 0
   _experiencePerShot: 35
   _coinsPerShot: 35
+  _levelForOpen: 6

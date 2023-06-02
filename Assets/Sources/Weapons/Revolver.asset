@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Revolver
   m_EditorClassIdentifier: 
   _bullet: {fileID: 5610246596199644231, guid: fe21f04aa08533946a5be847866bdef3, type: 3}
-  _name: Revolver
-  _weaponClass: Pistol
+  _name: "\u0420\u0435\u0432\u043E\u043B\u044C\u0432\u0435\u0440"
+  _weaponClass: "\u041F\u0438\u0441\u0442\u043E\u043B\u0435\u0442"
   _image: {fileID: 0}
   _bulletsCount: 6
   _damage: 0
@@ -23,3 +23,4 @@ MonoBehaviour:
   _type: 0
   _experiencePerShot: 15
   _coinsPerShot: 15
+  _levelForOpen: 2

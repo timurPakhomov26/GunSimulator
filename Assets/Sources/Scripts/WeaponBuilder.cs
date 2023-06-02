@@ -63,13 +63,7 @@ public class WeaponBuilder : MonoBehaviour, IBuilder
     {
         _cursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         _cursorPosition.z = 0;
-
-      // var  _isGrounded = Physics2D.(transform.position,_groundDistance,_groundMask);
-
-      /* if(_isGrounded == true)
-          _isCollider = true;*/
-
-        
+     
           if (OnMouse == true)
            {
 
@@ -80,41 +74,14 @@ public class WeaponBuilder : MonoBehaviour, IBuilder
             }
               else if(IsCollider == true)
              {
-              
-             // _isInParent = true;
-              OnMouse = false;
-              //transform.position = Vector3.zero;
-             // _isCollider = true;
+               OnMouse = false;
                MagazineInTrigger = true;
                OnTrigger?.Invoke();
-              // OnTrigger?.Invoke();
-
-              /* if(_onMouse == true)
-               {
-                  OnReloadMagazine?.Invoke();
-               }*/
-              //transform.localPosition = Vector3.zero;
-             // _weapon.CheckOnMagazineAnimation();
-              //MagazineInWeapon = true;
-              //return;
- 
-           }
+              
+            }
 
            }
         
-        /*else
-        {
-          if(_onMouse == true)
-          {
-             transform.position = _cursorPosition;
-          }
-          else if(_onMouse == false && _isCollider == false)
-          {
-             _isInParent = false;
-          }
-        }*/
-        
-       
     }  
 
     private void OnTriggerEnter2D( Collider2D collision) 

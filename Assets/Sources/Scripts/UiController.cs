@@ -6,7 +6,7 @@ using System.Collections;
 public class UiController : MonoBehaviour
 {
     public static int WeaponIndex = 0;
-    [SerializeField] private PlayerData _playerData;
+    [SerializeField] private Init _init;
     [SerializeField] private TextMeshProUGUI _coinsValueText;
     [SerializeField] private Weapon _weapon;
     [SerializeField] private Item[] _items;
@@ -15,55 +15,62 @@ public class UiController : MonoBehaviour
 
     [SerializeField] private Animator _uiAnimator;
 
+
+     
     [SerializeField] private GameObject _bulletsCountPanel;
-    [SerializeField] private GameObject _infinityBullets;
+    [SerializeField] private GameObject _infinityBulletsSign;
+    [SerializeField] private TextMeshProUGUI _infinityTimeText;
+    [SerializeField] private GameObject _infinityButton;
+
+
+   
+    [Header("ForTranslate")]
+     private const string InfinityBulletsString = "Бесконечные патроны: ";
+     private const string SecondsString = " Секунд";
+    [SerializeField] private float _infinityTime = 30f;
+    private float _startInfinityTime;
     public static bool InfinityBulletsActive = false;
     private float _timeForInfinityBullets = 15f;
-    private string _weaponNameString = "Оружие: ";
-    private string _weaponClassString = "Класс: ";
-    
-    
-
+    private const string WeaponNameString = "Оружие: ";
+    private const string WeaponClassString = "Класс: ";
     [Header("Weapon Info")]
     [SerializeField] private TextMeshProUGUI _weaponName;
     [SerializeField] private TextMeshProUGUI _weaponClass;
+    private const string LevelString = "Уровень ";
     [SerializeField] private GameObject _pricePanel;
     [SerializeField] private TextMeshProUGUI _price;
+    [SerializeField] private TextMeshProUGUI _needLevelFoOpen;
     [SerializeField] private Image _bulletType;
+
+
+
      
     [Header("Level")]
+    private  const float MaxExperienceCountKoefficent = 1.2f;
+    private const float UpLevelBonusCoinsKoefficent = 1.2f;
     [SerializeField] private Image _levelView;
     [SerializeField] private GameObject _upLevelBonusPanel;
     [SerializeField] private TextMeshProUGUI _upLevelBonusCoins;
     [SerializeField] private TextMeshProUGUI _levelText;
-   // [SerializeField] private float _maxExperienceCount = 10f;
     private float _currentExperienceCount;
     [SerializeField] private Button _upLevelButton;
     [SerializeField] private Color _upLevelButtonColorOnActive;
     [SerializeField] private Color _upLevelButtonColorOnNotActive;
 
-    private float _upLevelBonusCoinsKoefficent = 1.2f;
-    private float _maxExperienceCountKoefficent = 1.2f;
+
+
 
     private bool _isReadyToUpgrade = false;
     private float _levelPoints;
 
     
-    
-    private void OnEnable() 
-    {
-       Weapon.OnShot += AddExperience;  
-    }
-
-    private void OnDisable() 
-    {
-       Weapon.OnShot -= AddExperience;  
-      
-    }
-
-
+ 
     private void Start() 
     {
+      
+      _timeForInfinityBullets = _infinityTime;
+      _startInfinityTime = _infinityTime;
+      _infinityButton.SetActive(true);
        SetUpLevelButton(false,_upLevelButtonColorOnNotActive);
        _upLevelBonusPanel.SetActive(false);
        ApplyUiElements();
@@ -76,7 +83,7 @@ public class UiController : MonoBehaviour
 
     private void Update()
     {
-      if(_currentExperienceCount >= _playerData.MaxExperienceCount)
+      if(_currentExperienceCount >= _init.playerData.MaxExperienceCount)
       {
           SetUpLevelButton(true,_upLevelButtonColorOnActive); 
           _uiAnimator.SetTrigger("ActiveUppButton"); 
@@ -86,6 +93,8 @@ public class UiController : MonoBehaviour
           SetUpLevelButton(false,_upLevelButtonColorOnNotActive);
           _uiAnimator.SetTrigger("NotActiveUppButton"); 
       }
+
+      TimeInfinity();
     }
 
     public void OnLeftButtonDown()
@@ -124,14 +133,14 @@ public class UiController : MonoBehaviour
     {
        _bulletsInMagazineText.text = _items[WeaponIndex].WeaponInfoo.BulletsCount.ToString(); 
        _currentBuletsCountText.text = _items[WeaponIndex].CurrentBulletsCount.ToString() + "/"; 
-       _weaponName.text = _weaponNameString + _items[WeaponIndex].WeaponInfoo.WeaponName.ToString();
-       _weaponClass.text = _weaponClassString + _items[WeaponIndex].WeaponInfoo.WeaponClass.ToString();
+       _weaponName.text = WeaponNameString + _items[WeaponIndex].WeaponInfoo.WeaponName.ToString();
+       _weaponClass.text = WeaponClassString + _items[WeaponIndex].WeaponInfoo.WeaponClass.ToString();
        _price.text = _items[WeaponIndex].WeaponInfoo.Price.ToString();
-       _coinsValueText.text = _playerData.CoinsValue.ToString();
-       _levelText.text = "Level: " + _playerData.Level.ToString();
-      // _bulletType.sprite = _items[WeaponIndex].WeaponInfoo.BulletSprite;
-        _levelView.fillAmount = _currentExperienceCount / _playerData.MaxExperienceCount;
-        _upLevelBonusCoins.text = _playerData.UpLevelBonusCoinsValue.ToString();
+       _coinsValueText.text = _init.playerData.CoinsValue.ToString();
+       _levelText.text = LevelString + _init.playerData.Level.ToString();
+        _levelView.fillAmount = _currentExperienceCount / _init.playerData.MaxExperienceCount;
+        _upLevelBonusCoins.text = ( Mathf.RoundToInt(_init.playerData.UpLevelBonusCoinsValue)).ToString();
+        _needLevelFoOpen.text = LevelString + _items[WeaponIndex].WeaponInfoo.LevelFoOpen.ToString();
     }
 
     private void SetPricePanel()
@@ -153,10 +162,12 @@ public class UiController : MonoBehaviour
 
     public void BuyWeapon()
     {
-        if(_playerData.CoinsValue >= _items[WeaponIndex].WeaponInfoo.Price)
+        if(_init.playerData.CoinsValue >= _items[WeaponIndex].WeaponInfoo.Price && 
+          _init.playerData.Level >= _items[UiController.WeaponIndex].WeaponInfoo.LevelFoOpen)
         {
           _items[WeaponIndex].IsBuyed = true;
-          _playerData.CoinsValue -= _items[WeaponIndex].WeaponInfoo.Price;
+          _items[WeaponIndex].GunTriggers.enabled = true;
+          _init.playerData.CoinsValue -= _items[WeaponIndex].WeaponInfoo.Price;
           SetPricePanel();
           ApplyUiElements();
         }
@@ -167,10 +178,10 @@ public class UiController : MonoBehaviour
       if(_isReadyToUpgrade == true)
       {
        _uiAnimator.SetTrigger("NotActiveUppButton");
-       _playerData.Level ++;
+       _init.playerData.Level ++;
        _currentExperienceCount = 0;
-       _playerData.MaxExperienceCount *= _maxExperienceCountKoefficent;
-       _playerData.UpLevelBonusCoinsValue *= _upLevelBonusCoinsKoefficent;
+       _init.playerData.MaxExperienceCount *= MaxExperienceCountKoefficent;
+       _init.playerData.UpLevelBonusCoinsValue *= UpLevelBonusCoinsKoefficent;
        
        ApplyUiElements();
        OpenBonusPanel();
@@ -182,7 +193,7 @@ public class UiController : MonoBehaviour
 
     public void CloseBonusPanel()
     {
-       _playerData.CoinsValue += _playerData.UpLevelBonusCoinsValue;
+       _init.playerData.CoinsValue += Mathf.RoundToInt(_init.playerData.UpLevelBonusCoinsValue);
        ApplyUiElements();
        _upLevelBonusPanel.SetActive(false);
     }
@@ -196,26 +207,17 @@ public class UiController : MonoBehaviour
     public void GetBonusPerNewLevel()
     {
        Debug.Log("Reward Ad");
-      _playerData.CoinsValue += (_playerData.UpLevelBonusCoinsValue * 3);
+      _init.playerData.CoinsValue += Mathf.RoundToInt(_init.playerData.UpLevelBonusCoinsValue * 3);
       ApplyUiElements();
       _upLevelBonusPanel.SetActive(false);
     }
      
 
-    private void AddExperience()
-    {
-      if(_currentExperienceCount >= _playerData.MaxExperienceCount)
-      {
-        // _levelView.fillAmount = _currentExperienceCount / _maxExperienceCount;
-         // SetUpLevelButton(true,_upLevelButtonColorOnActive);
-         
-      }
-      else
-      {
-         _currentExperienceCount += _items[WeaponIndex].WeaponInfoo.ExperiencePerShot;
-         _levelView.fillAmount = _currentExperienceCount / _playerData.MaxExperienceCount;
-          SetUpLevelButton(false,_upLevelButtonColorOnNotActive);
-      }
+    public  void AddExperience()
+    {  
+       _currentExperienceCount += _items[WeaponIndex].WeaponInfoo.ExperiencePerShot;
+       _levelView.fillAmount = _currentExperienceCount / _init.playerData.MaxExperienceCount;
+       SetUpLevelButton(false,_upLevelButtonColorOnNotActive);
        
     }
 
@@ -229,7 +231,19 @@ public class UiController : MonoBehaviour
     {
        Debug.Log("Reward Add");
        InfinityBulletsActive = true;
+      // TimeInfinity();
        StartCoroutine(StartInfinityBulletsEffect());
+    }
+
+    private void TimeInfinity()
+    {
+       if(InfinityBulletsActive == true && _infinityTime > 0)
+       {
+         _infinityButton.SetActive(false);
+         _infinityTime -= Time.deltaTime;
+         _infinityTimeText.enabled = true;
+         _infinityTimeText.text = InfinityBulletsString +  Mathf.Ceil(_infinityTime).ToString() + SecondsString;
+       }
     }
 
     private IEnumerator StartInfinityBulletsEffect()
@@ -238,11 +252,14 @@ public class UiController : MonoBehaviour
        yield return new WaitForSeconds(_timeForInfinityBullets);
        SetBulletsCountView(false,true);
        InfinityBulletsActive = false;
+       _infinityTime = _startInfinityTime;
+        _infinityTimeText.enabled = false;
+       _infinityButton.SetActive(true);
     }
 
     private void SetBulletsCountView(bool infinityBulletsActive,bool bulletsCountPanelActive)
     {
-        _infinityBullets.SetActive(infinityBulletsActive);
+        _infinityBulletsSign.SetActive(infinityBulletsActive);
        _bulletsCountPanel.SetActive(bulletsCountPanelActive);
     }
     

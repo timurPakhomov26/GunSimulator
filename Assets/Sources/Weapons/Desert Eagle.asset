@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Desert Eagle
   m_EditorClassIdentifier: 
   _bullet: {fileID: 5610246596199644231, guid: fe21f04aa08533946a5be847866bdef3, type: 3}
-  _name: Desert Eagle
-  _weaponClass: Pistol
+  _name: "\u0414\u0435\u0441\u0435\u0440\u0442 \u0414\u0438\u0433\u043B"
+  _weaponClass: "\u041F\u0438\u0441\u0442\u043E\u043B\u0435\u0442"
   _image: {fileID: 0}
   _bulletsCount: 9
   _damage: 0
@@ -23,3 +23,4 @@ MonoBehaviour:
   _type: 0
   _experiencePerShot: 20
   _coinsPerShot: 20
+  _levelForOpen: 3

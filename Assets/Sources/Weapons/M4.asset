@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bullet: {fileID: 2297786258592943808, guid: fe21f04aa08533946a5be847866bdef3, type: 3}
   _name: M4
-  _weaponClass: Automat
+  _weaponClass: "\u0412\u0438\u043D\u0442\u043E\u0432\u043A\u0430"
   _image: {fileID: 0}
   _bulletsCount: 25
   _damage: 0
   _price: 22500
-  _rateOfFire: 0
+  _rateOfFire: 0.3
   _type: 1
   _experiencePerShot: 40
   _coinsPerShot: 40
+  _levelForOpen: 7

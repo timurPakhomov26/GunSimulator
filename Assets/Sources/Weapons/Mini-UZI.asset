@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: Mini-UZI
   m_EditorClassIdentifier: 
   _bullet: {fileID: 5610246596199644231, guid: fe21f04aa08533946a5be847866bdef3, type: 3}
-  _name: Mini-UZI
-  _weaponClass: Pistol-Pulemet
+  _name: "\u041C\u0438\u043D\u0438-\u0423\u0437\u0438"
+  _weaponClass: "\u041F\u0438\u0441\u0442\u043E\u043B\u0435\u0442-\u041F\u0443\u043B\u0435\u043C\u0435\u0442"
   _image: {fileID: 0}
   _bulletsCount: 20
   _damage: 0
   _price: 7500
-  _rateOfFire: 0
+  _rateOfFire: 0.08
   _type: 1
   _experiencePerShot: 25
   _coinsPerShot: 25
+  _levelForOpen: 4

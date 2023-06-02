@@ -25,8 +25,10 @@ public class WeaponInfo : ScriptableObject
     public ShootingType ShootingType => _type;
     [SerializeField] private float _experiencePerShot;
     public float ExperiencePerShot => _experiencePerShot;
-    [SerializeField] private float _coinsPerShot;
-    public float CoinsPerShot => _coinsPerShot;
+    [SerializeField] private int _coinsPerShot;
+    public int CoinsPerShot => _coinsPerShot;
+    [SerializeField] private int _levelForOpen;
+    public int LevelFoOpen => _levelForOpen;
     
     
 }

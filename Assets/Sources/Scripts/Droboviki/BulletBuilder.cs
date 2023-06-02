@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D),typeof(CapsuleCollider2D),typeof(Animator))]
@@ -39,7 +38,7 @@ public class BulletBuilder : MonoBehaviour, IBuilder
 
     private void Start()
     {
-      OnMouse = false;
+       OnMouse = false;
       _startPosition = transform.position;
     }
 
@@ -63,11 +62,6 @@ public class BulletBuilder : MonoBehaviour, IBuilder
         _cursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         _cursorPosition.z = 0;
 
-      // var  _isGrounded = Physics2D.(transform.position,_groundDistance,_groundMask);
-
-      /* if(_isGrounded == true)
-          _isCollider = true;*/
-
         
           if (OnMouse == true)
            {
@@ -79,41 +73,16 @@ public class BulletBuilder : MonoBehaviour, IBuilder
             }
               else if(IsCollider == true)
              {
-              
-             // _isInParent = true;
-              OnMouse = false;
-              //transform.position = Vector3.zero;
-             // _isCollider = true;
+                        
+               OnMouse = false;
+             
                MagazineInTrigger = true;
-               OnTrigger?.Invoke();
-              
-
-              /* if(_onMouse == true)
-               {
-                  OnReloadMagazine?.Invoke();
-               }*/
-              //transform.localPosition = Vector3.zero;
-             // _weapon.CheckOnMagazineAnimation();
-              //MagazineInWeapon = true;
-              //return;
+               OnTrigger?.Invoke();           
  
            }
 
            }
         
-        /*else
-        {
-          if(_onMouse == true)
-          {
-             transform.position = _cursorPosition;
-          }
-          else if(_onMouse == false && _isCollider == false)
-          {
-             _isInParent = false;
-          }
-        }*/
-        
-       
     }  
 
     private void OnTriggerEnter2D( Collider2D collision) 
@@ -123,15 +92,7 @@ public class BulletBuilder : MonoBehaviour, IBuilder
             IsCollider = true;
         }
     }
-   /* private void OnTriggerExit2D(Collider2D collision) 
-     {
-         if (collision.gameObject.CompareTag("Spawn"))
-        {
-            _isCollider = false;
-           
-        }
-     }
-*/
+   
     private IEnumerator Delay()
     {
        yield return new WaitForSeconds(0.8f);

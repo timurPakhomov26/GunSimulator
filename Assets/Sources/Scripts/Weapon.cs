@@ -16,6 +16,7 @@ public class Weapon : MonoBehaviour
     private float _time;
     private bool _isMobileButtonDown = false;
     
+    private bool _isShotButtonDown = false;
 
 
    private void OnEnable() 
@@ -24,51 +25,23 @@ public class Weapon : MonoBehaviour
       {
          _items[i].Builder = _items[i].IBuilderGameObject.GetComponent<IBuilder>();
         
-        // _items[i].IBuilderGameObject.GetComponent<IBuilder>().OnTrigger += CheckOnMagazineAnimation;
-       //  _items[i].IBuilderGameObject.GetComponent<IBuilder>().OnReloadMagazine += ReloadMagazine;
       } 
-      for(int i=0; i < _items.Length;i++)
-      {
-        
-         /*_items[i].Builder.OnTrigger += CheckOnMagazineAnimation;
-         _items[i].Builder.OnReloadMagazine += ReloadMagazine;*/
-
-        // _items[i].IBuilderGameObject.GetComponent<IBuilder>().OnTrigger += CheckOnMagazineAnimation;
-       //  _items[i].IBuilderGameObject.GetComponent<IBuilder>().OnReloadMagazine += ReloadMagazine;
-      }
    }
 
-
-   private void OnDisable() 
-   {
-      for(int i=0; i < _items.Length;i++)
-      {
-        /* _items[i].Builder.OnTrigger -= CheckOnMagazineAnimation;
-         _items[i].IBuilderGameObject.GetComponent<IBuilder>().OnReloadMagazine -= ReloadMagazine;*/
-        /* _items[i].Builder.OnTrigger -= CheckOnMagazineAnimation;
-         _items[i].Builder.OnReloadMagazine -= ReloadMagazine;*/
-      }  
-   }
 
    private void Start() 
    {
-     for(int i=0; i < _items.Length;i++)
-      {
-        /* _items[0].Builder.OnTrigger += CheckOnMagazineAnimation;
-         _items[0].Builder.OnReloadMagazine += ReloadMagazine;*/
-         //_items[i].IBuilderGameObject.GetComponent<IBuilder>().OnReloadMagazine += ReloadMagazine;
-      }
 
       foreach(var item in _items)
       {
         item.gameObject.SetActive(false);
         item.UIweaponPanel.SetActive(false);
         item.IsBuyed = false;
-       // item.Builder.enabled = false;
+        item.GunTriggers.enabled = false;
       }
 
       _items[0].IsBuyed = true;
-     // _items[0].Builder.enabled = true;
+      _items[0].GunTriggers.enabled = true;
        
        EquipItem(0);   
    }
@@ -86,58 +59,11 @@ public class Weapon : MonoBehaviour
 
     }
 
-    public void ShotInput()
-    {
-       if(_items[UiController.WeaponIndex].IsLoaded == true)
-       {
-         if(UiController.InfinityBulletsActive == true)
-         {
-             _items[UiController.WeaponIndex].Animator.SetTrigger("Shot");
-           StartCoroutine(ComeAnimationToDefault()); 
-           BulletFly();
-           _playerData.CoinsValue += _items[_index].WeaponInfoo.CoinsPerShot;
-           
-           OnShot?.Invoke();
-     
-           _uiController.ApplyUiElements();
-           return;
-         }
-
-         if (_items[UiController.WeaponIndex].CurrentBulletsCount > 0)
-         {
-           _items[UiController.WeaponIndex].Animator.SetTrigger("Shot");
-           StartCoroutine(ComeAnimationToDefault()); 
-           BulletFly();
-           _playerData.CoinsValue += _items[_index].WeaponInfoo.CoinsPerShot;
-           
-           OnShot?.Invoke();
-           _items[UiController.WeaponIndex].CurrentBulletsCount --;
-     
-           _uiController.ApplyUiElements();
-
-         }
-         else
-         {
-            _items[UiController.WeaponIndex].Animator.SetTrigger("ShotWithout");
-            StartCoroutine(ComeAnimationToDefault());
-           
-           ReloadMagazine();
-         }
-        
-       }
-
-       else
-       {
-         
-       _items[UiController.WeaponIndex].Animator.SetTrigger("ShotWithout");
-         StartCoroutine(ComeAnimationToDefault());
-       }   
-    }
 
 
     private IEnumerator ComeAnimationToDefault()
     {
-       yield return new WaitForSeconds(0.4f);
+       yield return new WaitForSeconds(0.3f);
        _items[UiController.WeaponIndex].Animator.SetTrigger("Idle");
     }
 
@@ -146,72 +72,15 @@ public class Weapon : MonoBehaviour
     private void Update() 
     {
        
-
+      _time += Time.deltaTime;
       EquipItem(UiController.WeaponIndex);
       
       if(_items[UiController.WeaponIndex].Builder.MagazineInWeapon == true)
       {
          _items[UiController.WeaponIndex].Builder.OnMouse = false;
       }
-     // CheckOnMagazineAnimation();
 
-     /* for(int i = 0; i < _items.Length; i++)
-      {
-         if(DeviceTypes.Instance.CurrentDeviceType == DeviceTypeWEB.Desktop)
-         {
-            if(Input.GetKeyDown((i + 1).ToString()) == false) 
-             continue;
-         }
-         else 
-         {
-           EquipItem(_uiController.WeaponIndex);
-           break;
-         }
-         
-
-         EquipItem(i);
-         break;
-      }
-
-       _time += Time.deltaTime;
-       
-       if(_items[_index].WeaponInfoo.Type == WeaponType.Automatic)
-       {
-           if(DeviceTypes.Instance.CurrentDeviceType == DeviceTypeWEB.Desktop)
-           {
-              AutomaticShoot();
-
-           }
-           else
-           {
-              MobileShoot();
-           }
-       }
-       else if(_items[_index].WeaponInfoo.Type == WeaponType.NonAutomatic)
-       {
-          if(DeviceTypes.Instance.CurrentDeviceType == DeviceTypeWEB.Desktop)
-           {
-              NonAutomaticShoot();
-
-           }
-           else
-           {
-              MobileShoot();
-           }
-       }*/
     }
-
-   /* public void CheckOnMagazineAnimation()
-    {
-       if(_items[UiController.WeaponIndex].WeaponBuilder.MagazineInTrigger == true)
-       {
-          _items[UiController.WeaponIndex].Animator.SetTrigger("Magazine");
-          _items[UiController.WeaponIndex].WeaponBuilder.MagazineInWeapon = true;
-          StartCoroutine(ComeAnimationToDefault());
-       }
-    }*/
-
-    
 
    public void CheckOnMagazineAnimation()
     {
@@ -230,74 +99,13 @@ public class Weapon : MonoBehaviour
        }
     }
 
-    private void ReloadMagazine()
+    public void ReloadMagazine()
     {
        _items[UiController.WeaponIndex].IsLoaded = false;
        _items[UiController.WeaponIndex].Builder.IsCollider = false;
        _items[UiController.WeaponIndex].Builder.MagazineInTrigger = false;
        _items[UiController.WeaponIndex].Builder.MagazineInWeapon = false;
        _items[UiController.WeaponIndex].Magazine.SetTrigger("NewMagazine");
-       
-    }
-
-
-
-    private void AutomaticShoot()
-    {
-       if(Input.GetMouseButton(0) && _time >= _items[_index].WeaponInfoo.RateOfFire)
-       {
-          _items[_index]._shotSound.Play();
-
-           BulletFly();
-           //OnShot?.Invoke();
-           _time = 0;
-       }  
-       if(Input.GetMouseButtonUp(0))
-       {
-          _items[_index]._shotSound.Stop();
-
-       } 
-    }
-
-    private void NonAutomaticShoot()
-    {
-       if(Input.GetMouseButtonDown(0) && _time >= _items[_index].WeaponInfoo.RateOfFire)
-       {
-          _items[_index]._shotSound.Play();
-
-           BulletFly();
-          // OnShot?.Invoke();
-           _time = 0;
-       } 
-        if(Input.GetMouseButtonUp(0))
-       {
-         _items[_index]._shotSound.Stop();
-
-       }  
-    }
-
-    public void MobileShootButton()
-    {
-       _isMobileButtonDown = true;
-    }
-
-    private void MobileShoot()
-    {
-      if(_isMobileButtonDown == true && _time >= _items[_index].WeaponInfoo.RateOfFire)
-      {
-           _items[_index]._shotSound.Play();
-
-           BulletFly();
-          // OnShot?.Invoke();
-           _time = 0;
-           _isMobileButtonDown = false;
-      }
-    }
-
-    private void BulletFly()
-    {   
-       _bulletPool.Create(_items[UiController.WeaponIndex].BulletSpawn.position,Vector3.right,
-                         _items[UiController.WeaponIndex].WeaponInfoo.BulletSprite);
        
     }
 
@@ -324,7 +132,8 @@ public class Weapon : MonoBehaviour
 
         _previusItemIndex = _index;
      }
-  
+
+     
 }
 
 

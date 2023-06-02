@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: PulemetNG-7
   m_EditorClassIdentifier: 
   _bullet: {fileID: 2297786258592943808, guid: fe21f04aa08533946a5be847866bdef3, type: 3}
-  _name: NG-7
-  _weaponClass: Pulemet
+  _name: "\u041D\u0435\u0433\u0435\u0432"
+  _weaponClass: "\u041F\u0443\u043B\u0435\u043C\u0435\u0442"
   _image: {fileID: 0}
   _bulletsCount: 120
   _damage: 0
   _price: 40000
-  _rateOfFire: 0
+  _rateOfFire: 0.15
   _type: 1
   _experiencePerShot: 50
   _coinsPerShot: 50
+  _levelForOpen: 9
