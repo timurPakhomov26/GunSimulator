@@ -43,6 +43,7 @@
      <Compile Include="Assets\Sources\Scripts\IBuilder.cs" />
      <Compile Include="Assets\Sources\Scripts\SoundInMagazine.cs" />
      <Compile Include="Assets\Sources\Scripts\Droboviki\BulletBuilder.cs" />
+     <Compile Include="Assets\Sources\Scripts\Init.cs" />
      <Compile Include="Assets\Sources\Scripts\PoolMono.cs" />
      <Compile Include="Assets\Sources\Scripts\SoundController.cs" />
      <Compile Include="Assets\Sources\Scripts\UiController.cs" />
@@ -50,7 +51,6 @@
      <Compile Include="Assets\Sources\Scripts\BulletPool.cs" />
      <Compile Include="Assets\Sources\Scripts\Item.cs" />
      <Compile Include="Assets\Sources\Scripts\Weapon.cs" />
-     <Compile Include="Assets\Sources\Scripts\Init.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

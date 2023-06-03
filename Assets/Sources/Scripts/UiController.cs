@@ -33,6 +33,8 @@ public class UiController : MonoBehaviour
     private float _timeForInfinityBullets = 15f;
     private const string WeaponNameString = "Оружие: ";
     private const string WeaponClassString = "Класс: ";
+    private const string _500dollarsString = "500 долларов";
+
     [Header("Weapon Info")]
     [SerializeField] private TextMeshProUGUI _weaponName;
     [SerializeField] private TextMeshProUGUI _weaponClass;
@@ -40,9 +42,7 @@ public class UiController : MonoBehaviour
     [SerializeField] private GameObject _pricePanel;
     [SerializeField] private TextMeshProUGUI _price;
     [SerializeField] private TextMeshProUGUI _needLevelFoOpen;
-    [SerializeField] private Image _bulletType;
-
-
+    
 
      
     [Header("Level")]
@@ -63,11 +63,17 @@ public class UiController : MonoBehaviour
     private bool _isReadyToUpgrade = false;
     private float _levelPoints;
 
+    [Header("Ads")]
+    [SerializeField] private TextMeshProUGUI _500dollarsText;
+    [SerializeField] private float _timeForAds;
+    private int _moneyCountPerAds = 500;
+     
+
     
  
     private void Start() 
     {
-      
+       _500dollarsText.text = _500dollarsString;
       _timeForInfinityBullets = _infinityTime;
       _startInfinityTime = _infinityTime;
       _infinityButton.SetActive(true);
@@ -93,8 +99,10 @@ public class UiController : MonoBehaviour
           SetUpLevelButton(false,_upLevelButtonColorOnNotActive);
           _uiAnimator.SetTrigger("NotActiveUppButton"); 
       }
-
+       _timeForAds += Time.deltaTime;
       TimeInfinity();
+      ShowAdsInterstitial();
+
     }
 
     public void OnLeftButtonDown()
@@ -261,6 +269,21 @@ public class UiController : MonoBehaviour
     {
         _infinityBulletsSign.SetActive(infinityBulletsActive);
        _bulletsCountPanel.SetActive(bulletsCountPanelActive);
+    }
+
+    public void GetMoneyPerAds()
+    {
+       Debug.Log("Reward Ad");
+       _init.playerData.CoinsValue += _moneyCountPerAds;
+    }
+
+    private void ShowAdsInterstitial()
+    {
+       if(_timeForAds >= 60)
+       {
+         Debug.Log("Interstitial");
+         _timeForAds = 0;
+       }
     }
     
 }
