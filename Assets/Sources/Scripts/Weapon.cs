@@ -28,7 +28,6 @@ public class Weapon : MonoBehaviour
       } 
    }
 
-
    private void Start() 
    {
 
@@ -60,13 +59,11 @@ public class Weapon : MonoBehaviour
     }
 
 
-
     private IEnumerator ComeAnimationToDefault()
     {
        yield return new WaitForSeconds(0.3f);
        _items[UiController.WeaponIndex].Animator.SetTrigger("Idle");
     }
-
 
 
     private void Update() 
@@ -87,15 +84,13 @@ public class Weapon : MonoBehaviour
        if(_items[UiController.WeaponIndex].Builder.MagazineInTrigger == true)
        {
           _items[UiController.WeaponIndex].Magazine.SetTrigger("Magazine");
-        //  _items[UiController.WeaponIndex].CurrentBulletsCount = _items[UiController.WeaponIndex].WeaponInfoo.BulletsCount;
-        _items[UiController.WeaponIndex].CurrentBulletsCount += _items[UiController.WeaponIndex].CountOfAddedBullets;
+         _items[UiController.WeaponIndex].CurrentBulletsCount += _items[UiController.WeaponIndex].CountOfAddedBullets;
          if(_items[UiController.WeaponIndex].CurrentBulletsCount >= _items[UiController.WeaponIndex].WeaponInfoo.BulletsCount)
          {
            _items[UiController.WeaponIndex].Builder.MagazineInWeapon = true;
 
          }
           _uiController.ApplyUiElements();
-         // StartCoroutine(ComeAnimationToDefault());
        }
     }
 

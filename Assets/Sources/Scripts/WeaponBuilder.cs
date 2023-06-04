@@ -55,7 +55,7 @@ public class WeaponBuilder : MonoBehaviour, IBuilder
 
     private void Update() 
     {
-      Debug.Log(Enabled);
+      
        SetEnable();  
     }
 

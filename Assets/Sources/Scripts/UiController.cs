@@ -34,6 +34,7 @@ public class UiController : MonoBehaviour
     private const string WeaponNameString = "Оружие: ";
     private const string WeaponClassString = "Класс: ";
     private const string _500dollarsString = "500 долларов";
+    private const string YanString = " Ян";
 
     [Header("Weapon Info")]
     [SerializeField] private TextMeshProUGUI _weaponName;
@@ -69,7 +70,11 @@ public class UiController : MonoBehaviour
     private int _moneyCountPerAds = 500;
      
 
-    
+     
+    private void OnDisable() 
+    {
+      _init.playerData.LastExperienceCount = _currentExperienceCount;  
+    }
  
     private void Start() 
     {
@@ -81,7 +86,7 @@ public class UiController : MonoBehaviour
        _upLevelBonusPanel.SetActive(false);
        ApplyUiElements();
        SetPricePanel();
-       _currentExperienceCount = 0;
+       _currentExperienceCount = _init.playerData.LastExperienceCount;
        _levelView.fillAmount = _currentExperienceCount;
        SetBulletsCountView(false,true);
 
@@ -143,7 +148,16 @@ public class UiController : MonoBehaviour
        _currentBuletsCountText.text = _items[WeaponIndex].CurrentBulletsCount.ToString() + "/"; 
        _weaponName.text = WeaponNameString + _items[WeaponIndex].WeaponInfoo.WeaponName.ToString();
        _weaponClass.text = WeaponClassString + _items[WeaponIndex].WeaponInfoo.WeaponClass.ToString();
-       _price.text = _items[WeaponIndex].WeaponInfoo.Price.ToString();
+
+       if(_items[WeaponIndex].WeaponInfoo.BuyForRealMoney == true)
+       {
+          _price.text = _items[WeaponIndex].WeaponInfoo.Price.ToString() + YanString;
+       }
+       else
+       {
+        _price.text = _items[WeaponIndex].WeaponInfoo.Price.ToString();
+       }
+
        _coinsValueText.text = _init.playerData.CoinsValue.ToString();
        _levelText.text = LevelString + _init.playerData.Level.ToString();
         _levelView.fillAmount = _currentExperienceCount / _init.playerData.MaxExperienceCount;
@@ -173,12 +187,30 @@ public class UiController : MonoBehaviour
         if(_init.playerData.CoinsValue >= _items[WeaponIndex].WeaponInfoo.Price && 
           _init.playerData.Level >= _items[UiController.WeaponIndex].WeaponInfoo.LevelFoOpen)
         {
-          _items[WeaponIndex].IsBuyed = true;
-          _items[WeaponIndex].GunTriggers.enabled = true;
-          _init.playerData.CoinsValue -= _items[WeaponIndex].WeaponInfoo.Price;
-          SetPricePanel();
-          ApplyUiElements();
+          if(_items[WeaponIndex].WeaponInfoo.BuyForRealMoney == false)
+          {
+             SetBuyedWeapon();
+          }
+          else
+          {
+             SetBuyedWeapon();
+             InAppPurchaseMethod();
+          }
         }
+    }
+
+    private void SetBuyedWeapon()
+    {
+       _items[WeaponIndex].IsBuyed = true;
+       _items[WeaponIndex].GunTriggers.enabled = true;
+       _init.playerData.CoinsValue -= _items[WeaponIndex].WeaponInfoo.Price;
+       SetPricePanel();
+       ApplyUiElements();
+    }
+
+    private void InAppPurchaseMethod()
+    {
+       Debug.Log("In-app purchase");
     }
 
     public void UppLevel()
@@ -275,6 +307,7 @@ public class UiController : MonoBehaviour
     {
        Debug.Log("Reward Ad");
        _init.playerData.CoinsValue += _moneyCountPerAds;
+       ApplyUiElements();
     }
 
     private void ShowAdsInterstitial()

@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 068bc3f39c935eb4980987844e7821da, type: 3}
   m_Name: OC-14
   m_EditorClassIdentifier: 
+  _buyPerRealMoney: 1
   _bullet: {fileID: 2297786258592943808, guid: fe21f04aa08533946a5be847866bdef3, type: 3}
   _name: "\u0413\u0440\u043E\u0437\u0430"
   _weaponClass: "\u0410\u0432\u0442\u043E\u043C\u0430\u0442"
-  _image: {fileID: 0}
   _bulletsCount: 15
-  _damage: 0
   _price: 20
   _rateOfFire: 0.28
   _type: 1

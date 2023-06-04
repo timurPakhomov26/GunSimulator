@@ -8,6 +8,7 @@ public class PlayerData
     public int Level;
     public float MaxExperienceCount = 10;
     public float UpLevelBonusCoinsValue = 200;
+    public float LastExperienceCount =0;
 }
 
 
